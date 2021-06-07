@@ -21,7 +21,6 @@ connect.then((db) => {
 }, (err) => { console.log(err)});
 
 
-const Dishes = require('./models/dishes');
 
 const dishRouter = require('./routes/dishRouter');
 const promoRouter = require('./routes/promoRouter');
