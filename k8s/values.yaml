@@ -1,5 +1,8 @@
 
 mongo :
   class : node
-  path : /home/luis/api-express/mongo
+  path : /home/luis/api-express/mongo/vol
+  user : root
+  pass : Pa$$WoRd
+  port : 27017
   
