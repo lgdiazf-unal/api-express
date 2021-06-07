@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const mongoose = require('mongoose');
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
 
 /**
  *  mongo connection
@@ -37,13 +38,19 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser('12345-67890-09876-54321'));
-
+// app.use(cookieParser('12345-67890-09876-54321'));
+app.use(session({
+  name : "session-id",
+  secret : '12345-67890-09876-54321',
+  saveUninitialized : false,
+  resave : false,
+  store : new FileStore()
+}));
 
 function auth(req, res ,next){
-  console.log(req.signedCookies);
+  console.log(req.session);
 
-  if (!req.signedCookies.user){
+  if (!req.session.user){
 
     var authHeader = req.headers.authorization;
     if (!authHeader){
@@ -60,7 +67,7 @@ function auth(req, res ,next){
     let password = auth[1];
 
     if (username === 'admin' && password === "password"){
-      res.cookie('user','admin',{signed:true})
+      req.session.user = 'admin';
       next();
     }
     else{
@@ -71,7 +78,7 @@ function auth(req, res ,next){
     }
   }
   else{
-    if (req.signedCookies.user='admin'){
+    if (req.session.user='admin'){
       next();
     }
     else{
