@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo
+  name: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      volumes:
+        - name : vol-mongo
+          persistentVolumeClaim :
+            claimName : mongo
+      securityContext:
+          runAsUser: 999
+      containers:
+      - image: mongo:4.0
+        name: mongo
+        ports:
+        - containerPort: {{ .Values.mongo.port }}
+        volumeMounts :
+          - name : vol-mongo
+            mountPath : "/data/db"
+        env :
+          - name : MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name : sc-mongo
+                key : user
+          - name : MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name : sc-mongo
+                key : pass
+

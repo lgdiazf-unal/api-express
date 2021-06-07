@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  pass: {{ .Values.mongo.pass | b64enc }}
+  user: {{ .Values.mongo.user | b64enc }}
+kind: Secret
+metadata:
+  name: sc-mongo

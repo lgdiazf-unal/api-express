@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-express-mongo
+spec:
+  storageClassName: {{ .Values.mongo.class }}
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteOnce
+  local:
+    path: {{ .Values.mongo.path }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: db
+          operator: In
+          values:
+          - mongo
