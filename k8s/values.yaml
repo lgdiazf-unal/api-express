@@ -10,5 +10,6 @@ mongo :
 api :
   class : node
   path : /home/luis/api-express/api
+  port : 3000
 
   

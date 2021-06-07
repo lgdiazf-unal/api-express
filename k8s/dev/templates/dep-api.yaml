@@ -28,6 +28,7 @@ spec:
           - sleep 365d
         ports:
         - containerPort: {{ .Values.mongo.port }}
+        - containerPort: {{ .Values.api.port }}
         volumeMounts :
           - name : vol-api
             mountPath : "/mnt"
@@ -43,4 +44,12 @@ spec:
                 name : sc-mongo
                 key : pass
           - name : MONGO_PORT
-            value : "27017"
+            valueFrom:
+              configMapKeyRef:
+                name: api          
+                key: mongo_port
+          - name : API_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: api          
+                key: api_port
