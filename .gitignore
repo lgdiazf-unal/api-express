@@ -105,3 +105,6 @@ dist
 
 # mongo db 
 mongo/vol
+
+#
+api/app/sessions
