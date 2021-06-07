@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      volumes:
+        - name : vol-api
+          persistentVolumeClaim :
+            claimName : api
+      containers:
+      - image: node:12.18-slim
+        name: api
+        args:
+          - /bin/sh
+          - -c
+          - sleep 365d
+        ports:
+        - containerPort: {{ .Values.mongo.port }}
+        volumeMounts :
+          - name : vol-api
+            mountPath : "/mnt"
+        env :
+          - name : MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name : sc-mongo
+                key : user
+          - name : MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name : sc-mongo
+                key : pass
+          - name : MONGO_PORT
+            value : "27017"

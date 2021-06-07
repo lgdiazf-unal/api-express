@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: api
 spec:
-  storageClassName: {{ .Values.mongo.class}}
+  storageClassName: {{ .Values.api.class}}
   accessModes:
     - ReadWriteOnce
   volumeMode: Filesystem
