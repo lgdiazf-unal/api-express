@@ -29,6 +29,7 @@ spec:
         ports:
         - containerPort: {{ .Values.mongo.port }}
         - containerPort: {{ .Values.api.port }}
+        - containerPort: 30031
         volumeMounts :
           - name : vol-api
             mountPath : "/mnt"
