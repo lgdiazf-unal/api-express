@@ -108,3 +108,4 @@ mongo/vol
 
 #
 api/app/sessions
+api/app/public/images
